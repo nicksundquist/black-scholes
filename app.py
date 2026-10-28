@@ -429,6 +429,10 @@ with simulator_column.container(key="what_if_simulator"):
         st.error("Cannot calculate returns because the original option premium is zero.")
     elif evaluation_days >= hypothetical_days:
         st.error("The projection date must be before the simulator's expiration.")
+    elif hypothetical_days - evaluation_days > days_to_expiration:
+        st.error(
+            "Projected remaining DTE cannot exceed the original option's DTE."
+        )
     else:
         # Keep projected IV positive for the pricing engine and cap all scenarios at 100%.
         base_iv_pct = min(annual_volatility_pct, 100.0)
